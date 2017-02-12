@@ -36,6 +36,18 @@
                            completion:nil];
 }
 
+- (void)       fpPickerController:(FPPickerController *)pickerController
+    didFinishPickingMediaWithInfo:(FPMediaInfo *)info
+{
+  NSLog(@"FILE CHOSEN: %@", info);
+  
+  
+  [self.pickerController dismissViewControllerAnimated:YES
+                                            completion:nil];
+  
+}
+
+
 RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(PickAsset:(NSDictionary *)options
@@ -56,9 +68,11 @@ RCT_EXPORT_METHOD(PickAsset:(NSDictionary *)options
  // Ask for specific data types. (Optional) Default is all files
  
  
-  self.pickerController.dataTypes = @[@"image/*"];
+  self.pickerController.dataTypes = @[
+                                 @"*/*"
+                                 ];
  
-//  // Select and order the sources (Optional) Default is all sources
+  // Select and order the sources (Optional) Default is all sources
  
   self.pickerController.sourceNames = @[
                                    FPSourceFilesystem,
