@@ -20,9 +20,14 @@ var AssetsPicker = NativeModules.AssetsPicker;
 export default class RNFilePicker extends Component {
 
   selectImage(){
-    AssetsPicker.PickAsset(null,  (results) => {
-        console.log(results);
-      });
+    // AssetsPicker.PickAsset(null,  (results) => {
+    //     alert(JSON.stringify(results));
+    //   });
+
+    AssetsPicker.PickAsset(null).then(result =>{
+      alert(result);
+    }
+    )
     
 
   }

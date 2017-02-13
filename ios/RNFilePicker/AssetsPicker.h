@@ -15,6 +15,10 @@
 @interface AssetsPicker : NSObject <RCTBridgeModule,FPPickerControllerDelegate>
 //@property (nonatomic, weak) IBOutlet UIImageView *imageView;
 @property FPPickerController* pickerController;
+//@property RCTPromiseResolveBlock callback;
+
+@property RCTPromiseResolveBlock resolve;
+@property RCTPromiseRejectBlock reject;
 
 @end
 

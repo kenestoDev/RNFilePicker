@@ -28,6 +28,7 @@
 //}
 @implementation AssetsPicker
 
+
 - (void)fpPickerControllerDidCancel:(FPPickerController *)pickerController
 {
   NSLog(@"FP Cancelled Open");
@@ -42,9 +43,16 @@
   NSLog(@"FILE CHOSEN: %@", info);
   
   
-  [self.pickerController dismissViewControllerAnimated:YES
-                                            completion:nil];
+  @try{
   
+  [self.pickerController dismissViewControllerAnimated:YES
+                                            completion:^() {
+                                              self.resolve(@[info.mediaURL.path]);
+                                            }];
+  }
+  @catch(NSException* e){
+    self.reject(@"ERROR_OPENING", @"error closing assets picker", nil);
+  }
 }
 
 
@@ -52,11 +60,12 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(PickAsset:(NSDictionary *)options
                  
-                 callback: (RCTResponseSenderBlock)callback){
- 
-
-
- 
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject){
+ // self.callback = callback;
+  self.resolve = resolve;
+  self.reject = reject;
+  
  UIViewController *ctrl = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
  
  self.pickerController = [FPPickerController new];
@@ -104,12 +113,18 @@ RCT_EXPORT_METHOD(PickAsset:(NSDictionary *)options
 
  
  // Display it
+
+  @try{
  
  [ctrl presentViewController:self.pickerController
                     animated:YES
-                  completion:nil];
- 
- callback(@[@"Done"]);
+                  completion: nil];
+  }
+  @catch(NSException* e){
+    self.reject(@"ERROR_OPENING", @"error openning assets picker", nil);
+  }
+  
+
 
 }
 
